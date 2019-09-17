@@ -68,7 +68,6 @@ class Search extends React.Component {
         this.setState({films: data.results, isLoading: false}) 
         this.page = data.page;
         this.totalPages = data.total_pages;
-        console.log(this.state.films)
       })
 
     }
@@ -95,6 +94,8 @@ class Search extends React.Component {
             page = {this.page}
             totalPage = {this.totalPages}
             navigation = {this.props.navigation}
+            favoritesFilm = {this.props.favoritesFilm}
+            favoriteList = {false}
             //component se re rend si extra data et data changent
             />
         

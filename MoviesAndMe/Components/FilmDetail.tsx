@@ -15,19 +15,32 @@ class FilmDetail extends React.Component{
             isLoading: true
         }
     }
-    componentDidMount(){
-        getFilmDetailFromApi(this.props.navigation.getParam('idFilm')).then((data) =>{
-            this.setState({
-                film: data,
-                isLoading: false
-            })
+    componentDidMount() {
+        const favoriteFilmIndex = this.props.favoritesFilm.findIndex(item => item.id === this.props.navigation.getParam('idFilm'))
+        if (favoriteFilmIndex !== -1) { // Film déjà dans nos favoris, on a déjà son détail
+          // Pas besoin d'appeler l'API ici, on ajoute le détail stocké dans notre state global au state de notre component
+          this.setState({
+            film: this.props.favoritesFilm[favoriteFilmIndex],
+            isLoading: false
+          })
+          return
+        }
+        // Le film n'est pas dans nos favoris, on n'a pas son détail
+        // On appelle l'API pour récupérer son détail
+        this.setState({ isLoading: true })
+        getFilmDetailFromApi(this.props.navigation.getParam('idFilm')).then(data => {
+          this.setState({
+            film: data,
+            isLoading: false
+          })
         })
-    }
+      }
+    
     _diplayFavoriteImage(){
-        var sourceImage = require('../assets/img/ic_favorite_border.png')
+        var sourceImage = require('../assets/img/ic_favorite_border.png');
         if (this.props.favoritesFilm.findIndex(item => item.id === this.state.film.id) !== -1) {
             // Film dans nos favoris
-            sourceImage = require('../assets/img/ic_favorite.png')
+            sourceImage = require('../assets/img/ic_favorite.png');
         }
         return (
         <Image
