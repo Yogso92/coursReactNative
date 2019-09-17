@@ -1,8 +1,8 @@
 import React from 'react'
-import { StyleSheet, View, TextInput, Button, FlatList, ActivityIndicator } from 'react-native'
-import MovieItem from '../Components/MovieItem'
+import { StyleSheet, View, TextInput, Button, ActivityIndicator } from 'react-native'
 import {getFilmsFromApiWithSearchedText, getFilmDetailFromApi} from '../API/TMDBapi'
 import {connect} from 'react-redux'
+import FilmList from './FilmList'
 
 class Search extends React.Component {
   searchedText: string = "";
@@ -18,6 +18,7 @@ class Search extends React.Component {
       }
     this.page = 0
     this.totalPages = 0
+    this._loadFilms = this._loadFilms.bind(this)
   }
   _displayDetailForFilm = (idFilm) => {
     this.props.navigation.navigate("FilmDetail", {
@@ -66,7 +67,8 @@ class Search extends React.Component {
       getFilmsFromApiWithSearchedText(this._searchingText, (this.page+1)).then((data) => {
         this.setState({films: data.results, isLoading: false}) 
         this.page = data.page;
-        this.totalPages = data.total_pages
+        this.totalPages = data.total_pages;
+        console.log(this.state.films)
       })
 
     }
@@ -87,13 +89,13 @@ class Search extends React.Component {
         />
         <Button title='Search' onPress={() => this._loadFilms()}/>
         
-          <FlatList style={{flex: 1}}
-            data={this.state.films}
-            keyExtractor ={(item) => item.id.toString()}
-            renderItem={({item}) => <MovieItem film ={Object.assign(item, {isFilmFavorite: this._isItemFavorite(item.id)}) } displayDetailForFilm = {this._displayDetailForFilm} />} 
-            onEndReachedThreshold = {2}
-            onEndReached = {() => this._loadNextFilms()}
-            extraData = {this.props.favoritesFilm} //component se re rend si extra data et data changent
+          <FilmList style={{flex: 1}}
+            films={this.state.films}
+            loadFilms = {this._loadFilms}
+            page = {this.page}
+            totalPage = {this.totalPages}
+            navigation = {this.props.navigation}
+            //component se re rend si extra data et data changent
             />
         
         {this._displayLoading()}

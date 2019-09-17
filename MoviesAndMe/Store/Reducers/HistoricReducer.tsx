@@ -6,14 +6,16 @@ const initialState = {
     let newState
     switch(action.type){
       case 'TOGGLE_FILMDETAIL':
-        if(state.historicFilms.findIndex(item => item.id === action.value.id) === -1){
-          newState = {...state, historicFilms: {...state.historicFilms, ...action.value}}
+        const filmIndex = state.historicFilms.findIndex(item => item.id === action.value.id)
+        if( filmIndex === -1){
+          newState = {...state, historicFilms: [...state.historicFilms, action.value]}
         }
         return newState || state
       case 'REMOVE_HISTORIC_FILM':
-        if(state.historicFilms.findIndex(item => item.id === action.value.id) !== -1){
+        const filmIndex = state.historicFilms.findIndex(item => item.id === action.value.id)
+        if(filmIndex !== -1){
           newState = {...state, 
-                      historicFilms: state.historicFilm.filter(
+                      historicFilms: state.historicFilms.filter(
                         (item, index) =>  item.id !== action.value.id
                       )}
         }
@@ -29,3 +31,4 @@ const initialState = {
   }
   
   export default manageHistoricFilms
+  
