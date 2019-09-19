@@ -8,6 +8,7 @@ import Favorites from '../Favorites';
 import {Ionicons} from '@expo/vector-icons'
 import { Image, StyleSheet } from 'react-native';
 import React from 'react'
+import Test from '../Test';
 
 const SearchStackNavigator = createStackNavigator({
     Search: { //nom de la vue
@@ -31,10 +32,19 @@ const FavoriteStackNavigator = createStackNavigator({
         screen: FilmDetail
     }
 })
+const TestStackNavigator = createStackNavigator({
+    Test: {
+        screen: Test,
+        navigationOptions: {
+            title: "Ecran test"
+        }
+    }
+})
 
 const MoviesTabNavigator = createBottomTabNavigator({
     Search: SearchStackNavigator,
-    Favorites:  FavoriteStackNavigator
+    Favorites:  FavoriteStackNavigator,
+    Test: TestStackNavigator
     },
     {
         defaultNavigationOptions: ({navigation}) => ({
@@ -46,13 +56,17 @@ const MoviesTabNavigator = createBottomTabNavigator({
                     iconName = "md-search"
                 } else if(routeName == "Favorites"){
                     iconName = "md-star"+ (focused ? '' : '-outline')
+                }   else if(routeName == "Test"){
+                    iconName = "md-build"
                 }
-                return <IconComponent name = {iconName} size = {25} color = {tintColor}/>
-            }
+                return <IconComponent name = {iconName} size = {25} color = {tintColor} backgroundColor/>
+            },
         }),
         tabBarOptions: {
-            activeTintColor: 'blue',
-            inactiveTintColor: 'gray'
+            activeTintColor: '#0066FF',
+            inactiveTintColor: 'gray',
+            activeBackgroundColor: '#D3D3D3',
+            inactiveBackgroundColor: 'white'
         }
     }
 )
