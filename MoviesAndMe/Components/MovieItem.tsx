@@ -5,7 +5,7 @@ import {getImageFromApi} from '../API/TMDBapi'
 class MovieItem extends React.Component {
     _displayTitle(film){
         var title =""
-        if(this.props.isFilmFavorite){
+        if(film.isFilmFavorite){
           title += "🖤 "
         }
         title += film.original_title
